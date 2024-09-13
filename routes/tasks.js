@@ -14,70 +14,70 @@ const weektab = [
   "sunday",
 ];
 
-const assigned = (users, tasks) => {
-  users.sort((a, b) => b.totalPoints - a.totalPoints);
-  const assignedTasks = {};
-  tasks.forEach((task) => {});
-};
+// const assigned = (users, tasks) => {
+//   users.sort((a, b) => b.totalPoints - a.totalPoints);
+//   const assignedTasks = {};
+//   tasks.forEach((task) => {});
+// };
 
-function assignTasksToUsers(users, tasks) {
-  // Triez les utilisateurs par ordre décroissant de leur totalPoints
-  users.sort((a, b) => b.totalPoints - a.totalPoints);
+// function assignTasksToUsers(users, tasks) {
+//   // Triez les utilisateurs par ordre décroissant de leur totalPoints
+//   users.sort((a, b) => b.totalPoints - a.totalPoints);
 
-  // Créez un tableau pour stocker les tâches attribuées à chaque utilisateur
-  const assignedTasks = {};
+//   // Créez un tableau pour stocker les tâches attribuées à chaque utilisateur
+//   const assignedTasks = {};
 
-  // Initialisez les compteurs pour chaque jour de la semaine
-  const dayCounters = {
-    monday: 0,
-    tuesday: 0,
-    wednesday: 0,
-    thursday: 0,
-    friday: 0,
-    saturday: 0,
-    sunday: 0,
-  };
+//   // Initialisez les compteurs pour chaque jour de la semaine
+//   const dayCounters = {
+//     monday: 0,
+//     tuesday: 0,
+//     wednesday: 0,
+//     thursday: 0,
+//     friday: 0,
+//     saturday: 0,
+//     sunday: 0,
+//   };
 
-  // Parcourez chaque jour de la semaine
-  for (const day of Object.keys(dayCounters)) {
-    // Triez les tâches par fréquence (nombre de fois par semaine)
-    const sortedTasks = tasks.sort((a, b) => {
-      const freqA = a.frequency.length;
-      const freqB = b.frequency.length;
-      return freqA - freqB;
-    });
+//   // Parcourez chaque jour de la semaine
+//   for (const day of Object.keys(dayCounters)) {
+//     // Triez les tâches par fréquence (nombre de fois par semaine)
+//     const sortedTasks = tasks.sort((a, b) => {
+//       const freqA = a.frequency.length;
+//       const freqB = b.frequency.length;
+//       return freqA - freqB;
+//     });
 
-    // Attribuez les tâches aux utilisateurs
-    for (const task of sortedTasks) {
-      const user = users.shift(); // Prenez le prochain utilisateur
-      if (!user) break; // Si plus d'utilisateurs, sortez de la boucle
+//     // Attribuez les tâches aux utilisateurs
+//     for (const task of sortedTasks) {
+//       const user = users.shift(); // Prenez le prochain utilisateur
+//       if (!user) break; // Si plus d'utilisateurs, sortez de la boucle
 
-      // Incrémente le compteur du jour
-      dayCounters[day]++;
+//       // Incrémente le compteur du jour
+//       dayCounters[day]++;
 
-      // Ajoutez la tâche à l'utilisateur
-      if (!assignedTasks[user._id]) {
-        assignedTasks[user._id] = [];
-      }
-      assignedTasks[user._id].push({
-        user: user.name,
-        taskName: task.name,
-        task: task._id,
-        day,
-        value: task.value,
-      });
+//       // Ajoutez la tâche à l'utilisateur
+//       if (!assignedTasks[user._id]) {
+//         assignedTasks[user._id] = [];
+//       }
+//       assignedTasks[user._id].push({
+//         user: user.name,
+//         taskName: task.name,
+//         task: task._id,
+//         day,
+//         value: task.value,
+//       });
 
-      // Mettez à jour le totalPoints de l'utilisateur
-      user.totalPoints += task.value;
+//       // Mettez à jour le totalPoints de l'utilisateur
+//       user.totalPoints += task.value;
 
-      // Remettez l'utilisateur à la fin de la liste
-      users.push(user);
-    }
-  }
+//       // Remettez l'utilisateur à la fin de la liste
+//       users.push(user);
+//     }
+//   }
 
-  // Retournez l'objet assignedTasks
-  return assignedTasks;
-}
+//   // Retournez l'objet assignedTasks
+//   return assignedTasks;
+// }
 
 router.post("/task/create", fileUpload(), async (req, res) => {
   console.log("body create ===>", req.body);
@@ -154,16 +154,16 @@ router.post("/task/edit/:id", fileUpload(), async (req, res) => {
   }
 });
 
-router.post("/task/distribution", async (req, res) => {
-  try {
-    const response = await tasksDistibution("6557b0ba5bcd52c78804669a");
-    // console.log("resonse===>><!", response);
-    res.status(200).json({ result: response });
-  } catch (error) {
-    console.log(error);
-    res.status(400).json({ message: error.message });
-  }
-});
+// router.post("/task/distribution", async (req, res) => {
+//   try {
+//     const response = await tasksDistibution("6557b0ba5bcd52c78804669a");
+//     // console.log("resonse===>><!", response);
+//     res.status(200).json({ result: response });
+//   } catch (error) {
+//     console.log(error);
+//     res.status(400).json({ message: error.message });
+//   }
+// });
 
 router.post("/task/test", async (req, res) => {
   try {
@@ -179,51 +179,51 @@ router.post("/task/test", async (req, res) => {
   }
 });
 
-const tasksDistibutionTest = async (squad) => {
-  const usersTab = await User.find({ squad, isActive: true });
-  const tasksTab = await Task.find({ squad, isActive: true });
-};
+// const tasksDistibutionTest = async (squad) => {
+//   const usersTab = await User.find({ squad, isActive: true });
+//   const tasksTab = await Task.find({ squad, isActive: true });
+// };
 
-const tasksDistibution = async (squad) => {
-  const usersTab = await User.find({ squad, isActive: true });
-  const tasksTab = await Task.find({ squad, isActive: true });
+// const tasksDistibution = async (squad) => {
+//   const usersTab = await User.find({ squad, isActive: true });
+//   const tasksTab = await Task.find({ squad, isActive: true });
 
-  const assignedTasks = [];
+//   const assignedTasks = [];
 
-  tasksTab.sort((a, b) => a.value - b.value); // Trie les tâches par points croissants
-  weektab.forEach((day) => {
-    usersTab.forEach((user) => {
-      user.weeklyTasks[day].number = 0; // Initialise le total des points pour chaque utilisateur
-    });
+//   tasksTab.sort((a, b) => a.value - b.value); // Trie les tâches par points croissants
+//   weektab.forEach((day) => {
+//     usersTab.forEach((user) => {
+//       user.weeklyTasks[day].number = 0; // Initialise le total des points pour chaque utilisateur
+//     });
 
-    tasksTab.forEach((task) => {
-      // Fonction pour trouver l'utilisateur avec le moins de totalPoints
-      const minUser = usersTab.reduce((minUser, currentUser) =>
-        minUser.weeklyTasks[day].number < currentUser.weeklyTasks[day].number
-          ? minUser
-          : currentUser
-      );
-      console.log("useer===>!!!!", minUser.totalPoints);
+//     tasksTab.forEach((task) => {
+//       // Fonction pour trouver l'utilisateur avec le moins de totalPoints
+//       const minUser = usersTab.reduce((minUser, currentUser) =>
+//         minUser.weeklyTasks[day].number < currentUser.weeklyTasks[day].number
+//           ? minUser
+//           : currentUser
+//       );
+//       console.log("useer===>!!!!", minUser.totalPoints);
 
-      minUser.weeklyTasks[day].reference.push(task);
-      minUser.weeklyTasks[day].number += task.value;
-      minUser.totalPoints += task.value;
+//       minUser.weeklyTasks[day].reference.push(task);
+//       minUser.weeklyTasks[day].number += task.value;
+//       minUser.totalPoints += task.value;
 
-      assignedTasks.push({ user: minUser.name, tasksTab: minUser });
-      // }
-    });
-  });
+//       assignedTasks.push({ user: minUser.name, tasksTab: minUser });
+//       // }
+//     });
+//   });
 
-  return assignedTasks;
-};
+//   return assignedTasks;
+// };
 
-const assignTasks = async () => {
+const assignTasks = async (squad) => {
   try {
-    // Récupérer tous les utilisateurs actifs
-    const users = await User.find({ isActive: true }).populate("tasks").exec();
+    // Récupérer tous les utilisateurs actifs du groupe
+    const users = await User.find({ isActive: true, squad }).exec();
 
-    // Récupérer toutes les tâches actives
-    const tasks = await Task.find({ isActive: true }).exec();
+    // Récupérer toutes les tâches actives du groupe
+    const tasks = await Task.find({ isActive: true, squad }).exec();
 
     // Réinitialiser les tâches hebdomadaires de tous les utilisateurs
     users.forEach((user) => {
@@ -236,14 +236,14 @@ const assignTasks = async () => {
         saturday: { reference: [], number: 0 },
         sunday: { reference: [], number: 0 },
       };
-      user.totalPoints = 0; // Réinitialiser les points
+      user.weeklyPotentialPoints = 0; // Réinitialiser les points
     });
 
     // Fonction pour assigner les tâches selon les jours de la semaine
     const assignTaskToDay = (task, day, user) => {
       user.weeklyTasks[day].reference.push(task._id);
       user.weeklyTasks[day].number += 1;
-      user.totalPoints += task.value;
+      user.weeklyPotentialPoints += task.value;
       task.lastAssignedUser = user._id; // Mettre à jour le dernier utilisateur assigné
     };
 
@@ -294,15 +294,11 @@ const assignTasks = async () => {
   }
 };
 
-router.post("/task/repart", async (req, res) => {
+router.post("/tasks/distribution", async (req, res) => {
   try {
-    const squad = "6557b0ba5bcd52c78804669a";
-    const usersTab = await User.find({ squad, isActive: true });
-    const tasksTab = await Task.find({ squad, isActive: true });
-    // const response = assignTasksToUsers(usersTab, tasksTab);
-    // // console.log("resonse===>><!", response);
-    // res.status(200).json({ result: response });
-    const response = await assignTasks();
+    const squad = req.body.squad;
+    console.log("body===>", squad);
+    const response = await assignTasks(squad);
     res.status(200).json({ result: response });
   } catch (error) {
     console.log(error);
