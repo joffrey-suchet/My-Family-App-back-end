@@ -29,6 +29,7 @@ const User = mongoose.model("User", {
     saturday: taskOfDayModel,
     sunday: taskOfDayModel,
   },
+  weeklyPotentialPoints: { type: Number, default: 0 },
   isActive: { type: Boolean, default: true },
 });
 module.exports = User;
