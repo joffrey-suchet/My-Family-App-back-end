@@ -59,14 +59,11 @@ router.get("/users/:squad", async (req, res) => {
 
 router.post("/login", async ({ body }, res) => {
   try {
-    console.log("LOGIN!");
     if (body.name && body.squad) {
-      console.log("if");
       const squad = await Squad.findOne({ squad: body.squad });
 
       const user = await User.findOne({ squad: squad._id, name: body.name });
       if (user) {
-        console.log("user=>", user);
         // const newHash = SHA256(body.password + user.salt).toString(encBase64);
         // console.log("password=>", user.password);
 
