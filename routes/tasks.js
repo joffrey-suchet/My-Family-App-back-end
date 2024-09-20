@@ -4,81 +4,6 @@ const router = express.Router();
 const Task = require("../models/Task");
 const User = require("../models/User");
 
-const weektab = [
-  "monday",
-  "tuesday",
-  "wednesday",
-  "thursday",
-  "friday",
-  "saturday",
-  "sunday",
-];
-
-// const assigned = (users, tasks) => {
-//   users.sort((a, b) => b.totalPoints - a.totalPoints);
-//   const assignedTasks = {};
-//   tasks.forEach((task) => {});
-// };
-
-// function assignTasksToUsers(users, tasks) {
-//   // Triez les utilisateurs par ordre décroissant de leur totalPoints
-//   users.sort((a, b) => b.totalPoints - a.totalPoints);
-
-//   // Créez un tableau pour stocker les tâches attribuées à chaque utilisateur
-//   const assignedTasks = {};
-
-//   // Initialisez les compteurs pour chaque jour de la semaine
-//   const dayCounters = {
-//     monday: 0,
-//     tuesday: 0,
-//     wednesday: 0,
-//     thursday: 0,
-//     friday: 0,
-//     saturday: 0,
-//     sunday: 0,
-//   };
-
-//   // Parcourez chaque jour de la semaine
-//   for (const day of Object.keys(dayCounters)) {
-//     // Triez les tâches par fréquence (nombre de fois par semaine)
-//     const sortedTasks = tasks.sort((a, b) => {
-//       const freqA = a.frequency.length;
-//       const freqB = b.frequency.length;
-//       return freqA - freqB;
-//     });
-
-//     // Attribuez les tâches aux utilisateurs
-//     for (const task of sortedTasks) {
-//       const user = users.shift(); // Prenez le prochain utilisateur
-//       if (!user) break; // Si plus d'utilisateurs, sortez de la boucle
-
-//       // Incrémente le compteur du jour
-//       dayCounters[day]++;
-
-//       // Ajoutez la tâche à l'utilisateur
-//       if (!assignedTasks[user._id]) {
-//         assignedTasks[user._id] = [];
-//       }
-//       assignedTasks[user._id].push({
-//         user: user.name,
-//         taskName: task.name,
-//         task: task._id,
-//         day,
-//         value: task.value,
-//       });
-
-//       // Mettez à jour le totalPoints de l'utilisateur
-//       user.totalPoints += task.value;
-
-//       // Remettez l'utilisateur à la fin de la liste
-//       users.push(user);
-//     }
-//   }
-
-//   // Retournez l'objet assignedTasks
-//   return assignedTasks;
-// }
-
 router.post("/task/create", fileUpload(), async (req, res) => {
   console.log("body create ===>", req.body);
   try {
@@ -154,17 +79,6 @@ router.post("/task/edit/:id", fileUpload(), async (req, res) => {
   }
 });
 
-// router.post("/task/distribution", async (req, res) => {
-//   try {
-//     const response = await tasksDistibution("6557b0ba5bcd52c78804669a");
-//     // console.log("resonse===>><!", response);
-//     res.status(200).json({ result: response });
-//   } catch (error) {
-//     console.log(error);
-//     res.status(400).json({ message: error.message });
-//   }
-// });
-
 router.post("/task/test", async (req, res) => {
   try {
     const squad = "6557b0ba5bcd52c78804669a";
@@ -178,44 +92,6 @@ router.post("/task/test", async (req, res) => {
     res.status(400).json({ message: error.message });
   }
 });
-
-// const tasksDistibutionTest = async (squad) => {
-//   const usersTab = await User.find({ squad, isActive: true });
-//   const tasksTab = await Task.find({ squad, isActive: true });
-// };
-
-// const tasksDistibution = async (squad) => {
-//   const usersTab = await User.find({ squad, isActive: true });
-//   const tasksTab = await Task.find({ squad, isActive: true });
-
-//   const assignedTasks = [];
-
-//   tasksTab.sort((a, b) => a.value - b.value); // Trie les tâches par points croissants
-//   weektab.forEach((day) => {
-//     usersTab.forEach((user) => {
-//       user.weeklyTasks[day].number = 0; // Initialise le total des points pour chaque utilisateur
-//     });
-
-//     tasksTab.forEach((task) => {
-//       // Fonction pour trouver l'utilisateur avec le moins de totalPoints
-//       const minUser = usersTab.reduce((minUser, currentUser) =>
-//         minUser.weeklyTasks[day].number < currentUser.weeklyTasks[day].number
-//           ? minUser
-//           : currentUser
-//       );
-//       console.log("useer===>!!!!", minUser.totalPoints);
-
-//       minUser.weeklyTasks[day].reference.push(task);
-//       minUser.weeklyTasks[day].number += task.value;
-//       minUser.totalPoints += task.value;
-
-//       assignedTasks.push({ user: minUser.name, tasksTab: minUser });
-//       // }
-//     });
-//   });
-
-//   return assignedTasks;
-// };
 
 const assignTasks = async (squad) => {
   try {
