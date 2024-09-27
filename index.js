@@ -21,6 +21,9 @@ app.use(squads);
 const tasks = require("./routes/tasks");
 app.use(tasks);
 
+const userWeeklyTasks = require("./routes/userWeeklyTasks");
+app.use(userWeeklyTasks);
+
 app.all("*", function (req, res) {
   console.log("all");
   res.status(404).json({ message: "Page not found" });
