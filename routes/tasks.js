@@ -103,22 +103,27 @@ const assignTasks = async (squad) => {
 
     // Réinitialiser les tâches hebdomadaires de tous les utilisateurs
     users.forEach((user) => {
-      user.weeklyTasks = {
-        monday: { reference: [], number: 0 },
-        tuesday: { reference: [], number: 0 },
-        wednesday: { reference: [], number: 0 },
-        thursday: { reference: [], number: 0 },
-        friday: { reference: [], number: 0 },
-        saturday: { reference: [], number: 0 },
-        sunday: { reference: [], number: 0 },
-      };
+      user.weeklyTasks = [];
       user.weeklyPotentialPoints = 0; // Réinitialiser les points
     });
 
     // Fonction pour assigner les tâches selon les jours de la semaine
     const assignTaskToDay = (task, day, user) => {
-      user.weeklyTasks[day].reference.push(task._id);
-      user.weeklyTasks[day].number += 1;
+      // Vérifier si la journée de tache est créer
+      let dayTask = user.weeklyTasks.find((obj) => obj.day === day);
+      if (dayTask) {
+        // Si oui ajouter la tâche et augmenter les points
+        user.weeklyTasks.forEach((obj) => {
+          if (obj.day === day) {
+            obj.tasks.push(task._id);
+            obj.number += task.value;
+          }
+        });
+      } else {
+        // Sinon créer l'objet avec le jour, la tâche et les points
+        user.weeklyTasks.push({ day, tasks: [task._id], number: task.value });
+      }
+
       user.weeklyPotentialPoints += task.value;
       task.lastAssignedUser = user._id; // Mettre à jour le dernier utilisateur assigné
     };
