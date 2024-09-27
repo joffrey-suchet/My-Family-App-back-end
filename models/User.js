@@ -2,10 +2,6 @@ const mongoose = require("mongoose");
 
 const roles = ["user", "admins"];
 
-const taskOfDayModel = {
-  reference: [{ type: mongoose.Schema.Types.ObjectId, ref: "Task" }],
-  number: { type: Number, default: 0 },
-};
 const User = mongoose.model("User", {
   name: String,
   password: { type: String, default: "0000" },
@@ -20,15 +16,13 @@ const User = mongoose.model("User", {
     enum: roles,
   },
   totalPoints: { type: Number, default: 0 },
-  weeklyTasks: {
-    monday: taskOfDayModel,
-    tuesday: taskOfDayModel,
-    wednesday: taskOfDayModel,
-    thursday: taskOfDayModel,
-    friday: taskOfDayModel,
-    saturday: taskOfDayModel,
-    sunday: taskOfDayModel,
-  },
+  weeklyTasks: [
+    {
+      day: String,
+      tasks: [{ type: mongoose.Schema.Types.ObjectId, ref: "Task" }],
+      number: { type: Number, default: 0 },
+    },
+  ],
   weeklyPotentialPoints: { type: Number, default: 0 },
   isActive: { type: Boolean, default: true },
 });
