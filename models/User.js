@@ -19,7 +19,13 @@ const User = mongoose.model("User", {
   weeklyTasks: [
     {
       day: String,
-      tasks: [{ type: mongoose.Schema.Types.ObjectId, ref: "Task" }],
+      tasks: [
+        {
+          task: { type: mongoose.Schema.Types.ObjectId, ref: "Task" },
+          completed: { type: Boolean, default: false },
+          validated: { type: Boolean, default: false },
+        },
+      ],
       number: { type: Number, default: 0 },
     },
   ],
