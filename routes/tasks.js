@@ -50,7 +50,6 @@ router.post("/task/delete/:id", async (req, res) => {
 
 router.get("/task/:id", async (req, res) => {
   try {
-    console.log("update!!");
     const id = req.params.id;
     const task = await Task.findById(id);
     res.status(200).json(task);
@@ -79,19 +78,19 @@ router.post("/task/edit/:id", fileUpload(), async (req, res) => {
   }
 });
 
-router.post("/task/test", async (req, res) => {
-  try {
-    const squad = "6557b0ba5bcd52c78804669a";
-    const usersTab = await User.find({ squad, isActive: true });
-    const tasksTab = await Task.find({ squad, isActive: true });
-    const response = assignTasksToUsers(usersTab, tasksTab);
-    // console.log("resonse===>><!", response);
-    res.status(200).json({ result: response });
-  } catch (error) {
-    console.log(error);
-    res.status(400).json({ message: error.message });
-  }
-});
+// router.post("/task/test", async (req, res) => {
+//   try {
+//     const squad = "6557b0ba5bcd52c78804669a";
+//     const usersTab = await User.find({ squad, isActive: true });
+//     const tasksTab = await Task.find({ squad, isActive: true });
+//     const response = assignTasksToUsers(usersTab, tasksTab);
+//     // console.log("resonse===>><!", response);
+//     res.status(200).json({ result: response });
+//   } catch (error) {
+//     console.log(error);
+//     res.status(400).json({ message: error.message });
+//   }
+// });
 
 const assignTasks = async (squad) => {
   try {
@@ -115,13 +114,17 @@ const assignTasks = async (squad) => {
         // Si oui ajouter la tâche et augmenter les points
         user.weeklyTasks.forEach((obj) => {
           if (obj.day === day) {
-            obj.tasks.push(task._id);
+            obj.tasks.push({ task: task._id });
             obj.number += task.value;
           }
         });
       } else {
         // Sinon créer l'objet avec le jour, la tâche et les points
-        user.weeklyTasks.push({ day, tasks: [task._id], number: task.value });
+        user.weeklyTasks.push({
+          day,
+          tasks: [{ task: task._id }],
+          number: task.value,
+        });
       }
 
       user.weeklyPotentialPoints += task.value;
