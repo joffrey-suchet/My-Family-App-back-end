@@ -64,10 +64,10 @@ router.post("/login", async ({ body }, res) => {
 
       const user = await User.findOne({ squad: squad._id, name: body.name });
       if (user) {
-        // const newHash = SHA256(body.password + user.salt).toString(encBase64);
-        // console.log("password=>", user.password);
+        const newHash = SHA256(body.password + user.salt).toString(encBase64);
+        console.log("password=>", user.password);
 
-        const newHash = "z23pxMNwG3Wp3a3q4p2drwfnirtPT2obXaLbubNwLtE=";
+        // const newHash = "z23pxMNwG3Wp3a3q4p2drwfnirtPT2obXaLbubNwLtE=";
         console.log("ici=>", newHash);
         if (newHash === user.password) {
           res.status(200).json({
@@ -75,6 +75,7 @@ router.post("/login", async ({ body }, res) => {
             role: user.role,
             token: user.token,
             squad: user.squad,
+            id: user._id,
           });
         } else {
           res.status(401).json({ message: "Vous n'êtes pas autorisé" });
@@ -160,6 +161,36 @@ router.post("/user/delete/:id", async (req, res) => {
     await User.updateOne({ _id: id }, { isActive: false });
     res.status(200).json({ message: "l'utilisateur à été supprimé" });
   } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
+
+router.post("/user/taskCompleted/:userId/:taskId", async (req, res) => {
+  try {
+    const { userId, taskId } = req.params;
+    const { completed, validated } = req.body;
+    const user = await User.findById(userId).select("-password -salt");
+
+    const dayWithTask = user.weeklyTasks.find((day) =>
+      day.tasks.some((t) => t.task.equals(taskId))
+    );
+    if (dayWithTask) {
+      // Trouver la tâche spécifique
+      const taskObj = dayWithTask.tasks.find((t) => t.task.equals(taskId));
+
+      // Mettre à jour les champs
+      if (completed !== undefined) taskObj.completed = completed;
+      if (validated !== undefined) taskObj.validated = validated;
+
+      // Sauvegarder les modifications
+      await user.save();
+      res.status(200).json({ message: "Tâche mise à jour avec succès." });
+    } else {
+      res.status(404).json({ message: "Tâche non trouvée." });
+    }
+  } catch (error) {
+    console.log("catch", error.message);
+
     res.status(400).json({ message: error.message });
   }
 });
